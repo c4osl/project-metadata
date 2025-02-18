@@ -37,13 +37,13 @@
     color: #333;
 }
 
-.tooltip {
+.custom-tooltip {
     border-bottom: 1px dotted #333; /* Dotted underline */
     cursor: help; /* Indicates that there is additional information */
     display: inline-block;
 }
 
-.tooltip[title]:hover::after {
+.custom-tooltip[title]:hover::after {
     content: attr(title); /* Display the title attribute as tooltip */
     position: absolute;
     background: #333;

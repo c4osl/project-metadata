@@ -164,7 +164,7 @@ function pmm_project_infobox_shortcode($atts) {
                 <?php 
                     foreach ($project_types as $type) {
                         $tooltip = $type->description ? "title='" . esc_attr($type->description) . "'" : '';
-                        echo "<span class='tooltip' {$tooltip}>" . esc_html($type->name) . "</span> ";
+                        echo "<span class='custom-tooltip' {$tooltip}>" . esc_html($type->name) . "</span> ";
                     }
                 ?>
                 </p>
@@ -174,7 +174,7 @@ function pmm_project_infobox_shortcode($atts) {
                 <?php 
                     foreach ($priority_areas as $area) {
                         $tooltip = $area->description ? "title='" . esc_attr($area->description) . "'" : '';
-                        echo "<span class='tooltip' {$tooltip}>" . esc_html($area->name) . "</span> ";
+                        echo "<span class='custom-tooltip' {$tooltip}>" . esc_html($area->name) . "</span> ";
                     }
                 ?>
                 </p>
