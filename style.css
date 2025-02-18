@@ -37,3 +37,18 @@
     color: #333;
 }
 
+.tooltip {
+    border-bottom: 1px dotted #333; /* Dotted underline */
+    cursor: help; /* Indicates that there is additional information */
+}
+
+.tooltip[title]:hover::after {
+    content: attr(title); /* Display the title attribute as tooltip */
+    position: absolute;
+    background: #333;
+    color: #fff;
+    padding: 5px;
+    border-radius: 5px;
+    white-space: nowrap;
+    z-index: 1000;
+}

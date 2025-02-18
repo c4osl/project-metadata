@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Project Metadata Manager
  * Description: Adds a custom post type for projects with metadata fields and a shortcode to display project info.
- * Version: 1.5
+ * Version: 1.6
  * Author: Jeremy Malcolm
  */
 
@@ -144,11 +144,11 @@ function pmm_project_infobox_shortcode($atts) {
             }
         }
     }
-    
+
     // Additional project details
     $project_name = get_the_title($project_id);
-    $project_types = wp_get_post_terms($project_id, 'project_type', ['fields' => 'names']);
-    $priority_areas = wp_get_post_terms($project_id, 'priority_area', ['fields' => 'names']);
+    $project_types = wp_get_post_terms($project_id, 'project_type', ['fields' => 'all']);
+    $priority_areas = wp_get_post_terms($project_id, 'priority_area', ['fields' => 'all']);
     $project_image = get_the_post_thumbnail($project_id, 'thumbnail', ['class' => 'pmm-logo']);
     
     ob_start();
@@ -159,8 +159,26 @@ function pmm_project_infobox_shortcode($atts) {
         <?php endif; ?>
         <div class="pmm-info-container">
             <?php if ($project_name) : ?><p><strong>Name:</strong> <?php echo esc_html($project_name); ?></p><?php endif; ?>
-            <?php if (!empty($project_types)) : ?><p><strong>Type:</strong> <?php echo esc_html(implode(', ', $project_types)); ?></p><?php endif; ?>
-            <?php if (!empty($priority_areas)) : ?><p><strong>Priority Area:</strong> <?php echo esc_html(implode(', ', $priority_areas)); ?></p><?php endif; ?>
+            <?php if (!empty($project_types)) : ?>
+                <p><strong>Type:</strong> 
+                <?php 
+                    foreach ($project_types as $type) {
+                        $tooltip = $type->description ? "title='" . esc_attr($type->description) . "'" : '';
+                        echo "<span class='tooltip' {$tooltip}>" . esc_html($type->name) . "</span> ";
+                    }
+                ?>
+                </p>
+            <?php endif; ?>
+            <?php if (!empty($priority_areas)) : ?>
+                <p><strong>Priority Area:</strong> 
+                <?php 
+                    foreach ($priority_areas as $area) {
+                        $tooltip = $area->description ? "title='" . esc_attr($area->description) . "'" : '';
+                        echo "<span class='tooltip' {$tooltip}>" . esc_html($area->name) . "</span> ";
+                    }
+                ?>
+                </p>
+            <?php endif; ?>
             <?php echo $data; ?>
         </div>
     </div>
@@ -187,4 +205,3 @@ function pmm_default_project_archive_template($template) {
 }
 add_filter('template_include', 'pmm_default_project_archive_template');
 ?>
-
