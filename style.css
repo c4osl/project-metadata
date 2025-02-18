@@ -5,7 +5,7 @@
     background-color: #f9f9f9;
     display: flex;
     align-items: flex-start;
-    font-size: 13px;         /* Smaller text */
+    font-size: 14px;         /* Smaller text */
 }
 
 .pmm-logo-container {
@@ -30,7 +30,7 @@
 
 .pmm-info-container p {
     margin: 3px 0;           /* Reduced spacing between lines */
-    font-size: 13px;         /* Smaller font size */
+    font-size: 14px;         /* Smaller font size */
 }
 
 .pmm-info-container p strong {
@@ -40,7 +40,7 @@
 .tooltip {
     border-bottom: 1px dotted #333; /* Dotted underline */
     cursor: help; /* Indicates that there is additional information */
-    position: relative; /* Ensure tooltips are positioned relative to their container */
+    display: inline-block;
 }
 
 .tooltip[title]:hover::after {
@@ -52,8 +52,4 @@
     border-radius: 5px;
     white-space: nowrap;
     z-index: 1000;
-    top: 100%; /* Position tooltip below the text */
-    left: 0; /* Align tooltip with the text */
-    display: block; /* Ensure tooltip is displayed */
-    visibility: visible; /* Ensure tooltip is visible */
 }
