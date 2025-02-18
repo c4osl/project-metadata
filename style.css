@@ -1,0 +1,39 @@
+.pmm-project-info-box {
+    border: 2px solid #333; /* Dark border */
+    padding: 10px;           /* Reduced padding */
+    margin: 15px 0;
+    background-color: #f9f9f9;
+    display: flex;
+    align-items: flex-start;
+    font-size: 13px;         /* Smaller text */
+}
+
+.pmm-logo-container {
+    margin-left: 15px;       /* Added left margin to separate image */
+    flex-shrink: 0;
+    max-width: 100px;        /* Ensure image doesn't overflow */
+    order: -1;               /* Ensure image stays on the right */
+}
+
+.pmm-logo {
+    max-width: 100%;         /* Allow the image to scale within its container */
+    height: auto;
+    border: 1px solid #ccc;
+    padding: 5px;
+    background-color: #fff;
+    display: block;          /* Ensures the image is displayed as a block */
+}
+
+.pmm-info-container {
+    flex-grow: 1;
+}
+
+.pmm-info-container p {
+    margin: 3px 0;           /* Reduced spacing between lines */
+    font-size: 13px;         /* Smaller font size */
+}
+
+.pmm-info-container p strong {
+    color: #333;
+}
+
