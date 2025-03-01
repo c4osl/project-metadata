@@ -15,6 +15,7 @@ get_header(); ?>
             <thead>
                 <tr>
                     <th>Project Name</th>
+                    <th>Description</th>
                     <th>Type</th>
                     <th>Priority Area</th>
                     <th>From Date</th>
@@ -25,6 +26,7 @@ get_header(); ?>
                 <?php while (have_posts()) : the_post(); ?>
                     <tr>
                         <td><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></td>
+                        <td><?php echo get_the_term_list(get_the_ID(), 'project_motto', '', ', '); ?></td>
                         <td><?php echo get_the_term_list(get_the_ID(), 'project_type', '', ', '); ?></td>
                         <td><?php echo get_the_term_list(get_the_ID(), 'priority_area', '', ', '); ?></td>
                         <td><?php echo esc_html(get_post_meta(get_the_ID(), 'pmm_from_date', true)); ?></td>

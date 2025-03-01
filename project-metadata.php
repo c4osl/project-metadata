@@ -57,6 +57,7 @@ add_action('add_meta_boxes', 'pmm_add_meta_boxes');
 
 function pmm_project_meta_callback($post) {
     $fields = [
+        'pmm_motto' => 'Description',
         'pmm_from_date' => 'From Date',
         'pmm_to_date' => 'To Date',
         'pmm_contact_name' => 'Contact Name',
@@ -74,7 +75,7 @@ function pmm_save_project_meta($post_id) {
     if (get_post_type($post_id) !== 'project') {
         return;
     }
-    $fields = ['pmm_from_date', 'pmm_to_date', 'pmm_contact_name', 'pmm_contact_details', 'pmm_project_url'];
+    $fields = ['pmm_motto', 'pmm_from_date', 'pmm_to_date', 'pmm_contact_name', 'pmm_contact_details', 'pmm_project_url'];
     foreach ($fields as $field) {
         if (isset($_POST[$field])) {
             update_post_meta($post_id, $field, sanitize_text_field($_POST[$field]));
@@ -100,6 +101,7 @@ function pmm_project_infobox_shortcode($atts) {
     // Get project details
     $project_id = $atts['id'];
     $fields = [
+        'pmm_motto' => 'Description',
         'pmm_from_date' => 'Dates',
         'pmm_contact_name' => 'Contact',
         'pmm_contact_details' => 'Contact Details',
@@ -159,6 +161,7 @@ function pmm_project_infobox_shortcode($atts) {
         <?php endif; ?>
         <div class="pmm-info-container">
             <?php if ($project_name) : ?><p><strong>Name:</strong> <?php echo esc_html($project_name); ?></p><?php endif; ?>
+            <?php echo $data; ?>
             <?php if (!empty($project_types)) : ?>
                 <p><strong>Type:</strong> 
                 <?php 
@@ -179,13 +182,71 @@ function pmm_project_infobox_shortcode($atts) {
                 ?>
                 </p>
             <?php endif; ?>
-            <?php echo $data; ?>
         </div>
     </div>
     <?php
     return ob_get_clean();
 }
 add_shortcode('project_infobox', 'pmm_project_infobox_shortcode');
+
+// Shortcode to display projects in a given priority area
+function pmm_projects_priority_area_shortcode( $atts ) {
+    // Define the shortcode attributes and set a default empty slug
+    $atts = shortcode_atts( array(
+        'slug' => '',
+    ), $atts, 'projects_priority_area' );
+
+    // If no slug provided, return nothing
+    if ( empty( $atts['slug'] ) ) {
+        return '';
+    }
+
+    // Setup query args to get projects in the specified priority area
+    $query_args = array(
+        'post_type'      => 'project',
+        'posts_per_page' => -1, // retrieve all projects
+        'orderby'        => 'title',
+        'order'          => 'ASC',
+        'tax_query'      => array(
+            array(
+                'taxonomy' => 'priority_area',
+                'field'    => 'slug',
+                'terms'    => sanitize_text_field( $atts['slug'] ),
+            ),
+        ),
+    );
+
+    $projects = new WP_Query( $query_args );
+
+    // Start output buffering to collect output
+    ob_start();
+
+    if ( $projects->have_posts() ) {
+        echo '<ul>';
+        while ( $projects->have_posts() ) {
+            $projects->the_post();
+            // Get project title and permalink
+            $project_title = get_the_title();
+            $project_link  = get_permalink();
+            // Get the project description from the pmm_motto field
+            $project_description = get_post_meta( get_the_ID(), 'pmm_motto', true );
+            ?>
+            <li>
+                <a href="<?php echo esc_url( $project_link ); ?>"><?php echo esc_html( $project_title ); ?></a>, 
+                <?php echo esc_html( $project_description ); ?>
+            </li>
+            <?php
+        }
+        echo '</ul>';
+    } else {
+        echo '<p>No projects found in this priority area.</p>';
+    }
+
+    wp_reset_postdata();
+
+    return ob_get_clean();
+}
+add_shortcode( 'projects_priority_area', 'pmm_projects_priority_area_shortcode' );
 
 // Default Single Post Template
 function pmm_default_project_template($template) {
@@ -205,3 +266,17 @@ function pmm_default_project_archive_template($template) {
 }
 add_filter('template_include', 'pmm_default_project_archive_template');
 ?>
+
+// If a URL is set, show that instead of the project detail page
+function pmm_redirect_projects() {
+    if (is_singular('project')) {
+        $project_url = get_post_meta(get_the_ID(), 'pmm_project_url', true);
+        
+        if (!empty($project_url) && filter_var($project_url, FILTER_VALIDATE_URL)) {
+            wp_redirect(esc_url($project_url), 301);
+            exit;
+        }
+    }
+}
+add_action('template_redirect', 'pmm_redirect_projects');
+
