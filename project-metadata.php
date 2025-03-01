@@ -265,7 +265,6 @@ function pmm_default_project_archive_template($template) {
     return $template;
 }
 add_filter('template_include', 'pmm_default_project_archive_template');
-?>
 
 // If a URL is set, show that instead of the project detail page
 function pmm_redirect_projects() {
@@ -280,3 +279,4 @@ function pmm_redirect_projects() {
 }
 add_action('template_redirect', 'pmm_redirect_projects');
 
+?>
