@@ -279,4 +279,20 @@ function pmm_redirect_projects() {
 }
 add_action('template_redirect', 'pmm_redirect_projects');
 
+// Register Campaign Page Template
+function pmm_add_campaign_template($templates) {
+    $templates['templates/campaign-template.php'] = 'Campaigns';
+    return $templates;
+}
+add_filter('theme_page_templates', 'pmm_add_campaign_template');
+
+// Load Campaign Template
+function pmm_load_campaign_template($template) {
+    if(is_page_template('templates/campaign-template.php')) {
+        $template = plugin_dir_path(__FILE__) . 'templates/campaign-template.php';
+    }
+    return $template;
+}
+add_filter('template_include', 'pmm_load_campaign_template');
+
 ?>

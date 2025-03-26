@@ -42,3 +42,49 @@
     cursor: help; /* Indicates that there is additional information */
     display: inline-block;
 }
+
+
+/* Campaign Page Styles */
+.campaign-grid {
+    display: grid;
+    gap: 2rem;
+    margin: 2rem 0;
+}
+
+.campaign-entry {
+    border: 1px solid #ddd;
+    padding: 1.5rem;
+    background: #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.campaign-thumbnail {
+    margin-bottom: 1rem;
+}
+
+.campaign-thumbnail img {
+    width: 100%;
+    height: auto;
+}
+
+.campaign-content h2 {
+    margin: 0 0 1rem;
+}
+
+.campaign-motto {
+    font-style: italic;
+    color: #666;
+    margin-bottom: 1rem;
+}
+
+.campaign-meta {
+    margin-top: 1rem;
+    font-size: 0.9em;
+    color: #666;
+}
+
+@media (min-width: 768px) {
+    .campaign-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
